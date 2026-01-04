@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dots and Boxes - AI Edition</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="title-icon">🎮</span>
+                    Dots and Boxes
+                    <span class="subtitle">Predictive MinMax AI</span>
+                </h1>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Control Panel -->
+            <aside class="control-panel">
+                <div class="panel-section">
+                    <h2 class="section-title">🎯 Modalità di Gioco</h2>
+                    <div class="mode-selector">
+                        <button class="mode-btn active" data-mode="human_vs_ai">
+                            👤 vs 🤖
+                        </button>
+                        <button class="mode-btn" data-mode="ai_vs_ai">
+                            🤖 vs 🤖
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">⚙️ Impostazioni</h2>
+                    
+                    <div class="setting-group">
+                        <label class="setting-label">Dimensione Griglia</label>
+                        <select id="grid-size" class="setting-select">
+                            <option value="2">2×2 (Facile)</option>
+                            <option value="3" selected>3×3 (Medio)</option>
+                            <option value="4">4×4 (Difficile)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Strategia AI</label>
+                        <select id="ai-strategy" class="setting-select">
+                            <option value="constant" selected>Constant</option>
+                            <option value="progressive">Progressive Deepening</option>
+                            <option value="inverse">Inverse Relationship</option>
+                            <option value="exponential">Exponential Growth</option>
+                            <option value="sigmoid">Sigmoid Growth</option>
+                            <option value="staircase">Staircase</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Profondità (L): <span id="ai-L-value">3</span></label>
+                        <input type="range" id="ai-L" class="setting-slider" min="1" max="6" value="3">
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Larghezza (K): <span id="ai-K-value">5</span></label>
+                        <input type="range" id="ai-K" class="setting-slider" min="3" max="10" value="5">
+                    </div>
+
+                    <button id="new-game-btn" class="primary-btn">
+                        🎮 Nuova Partita
+                    </button>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">📊 Statistiche</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card player1">
+                            <div class="stat-label">Giocatore 1</div>
+                            <div class="stat-value" id="score-1">0</div>
+                        </div>
+                        <div class="stat-card player2">
+                            <div class="stat-label">Giocatore 2</div>
+                            <div class="stat-value" id="score-2">0</div>
+                        </div>
+                    </div>
+                    <div class="current-player">
+                        Turno: <span id="current-player-name">Giocatore 1</span>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">🚀 Training AI</h2>
+                    <div class="setting-group">
+                        <label class="setting-label">Iterazioni</label>
+                        <input type="number" id="train-iterations" class="setting-input" value="20" min="5" max="100">
+                    </div>
+                    <button id="train-btn" class="secondary-btn">
+                        🧠 Avvia Training
+                    </button>
+                    <div id="training-progress" class="training-progress hidden">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-text" id="progress-text">0/20</div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Game Board -->
+            <main class="game-area">
+                <div class="game-container">
+                    <div id="game-board" class="game-board">
+                        <!-- Board will be generated by JavaScript -->
+                    </div>
+                    
+                    <div id="game-over-overlay" class="game-over-overlay hidden">
+                        <div class="game-over-content">
+                            <h2 class="game-over-title">🎉 Partita Terminata!</h2>
+                            <p class="game-over-winner" id="winner-text"></p>
+                            <p class="game-over-score">
+                                <span id="final-score-1">0</span> - <span id="final-score-2">0</span>
+                            </p>
+                            <button id="play-again-btn" class="primary-btn">
+                                🔄 Gioca Ancora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-panel">
+                    <div class="info-card">
+                        <span class="info-label">Mosse Disponibili:</span>
+                        <span class="info-value" id="moves-count">0</span>
+                    </div>
+                    <div class="info-card ai-thinking hidden" id="ai-thinking">
+                        <span class="spinner"></span>
+                        <span>AI sta pensando...</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/static/js/game.js"></script>
+</body>
+</html>
