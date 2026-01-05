@@ -23,3 +23,6 @@ plotly>=5.14.0
 # Web GUI
 flask>=2.3.0
 flask-cors>=4.0.0
+
+# GUI
+pygame>=2.5.0

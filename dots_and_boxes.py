@@ -30,12 +30,13 @@ class DotsAndBoxes:
         self.grid_size = grid_size
         self.dots = grid_size + 1
         
-        # Edges are represented as boolean matrices
+        # Edges are represented as integer matrices
+        # 0 = no edge, 1 = player 1, -1 = player 2
         # horizontal_edges[i][j] represents edge between dot(i,j) and dot(i,j+1)
-        self.horizontal_edges = np.zeros((self.dots, self.grid_size), dtype=bool)
+        self.horizontal_edges = np.zeros((self.dots, self.grid_size), dtype=int)
         
         # vertical_edges[i][j] represents edge between dot(i,j) and dot(i+1,j)
-        self.vertical_edges = np.zeros((self.grid_size, self.dots), dtype=bool)
+        self.vertical_edges = np.zeros((self.grid_size, self.dots), dtype=int)
         
         # Box ownership: 0 = unclaimed, 1 = player 1, -1 = player 2
         self.boxes = np.zeros((self.grid_size, self.grid_size), dtype=int)
@@ -73,13 +74,13 @@ class DotsAndBoxes:
         # Check horizontal edges
         for i in range(self.dots):
             for j in range(self.grid_size):
-                if not self.horizontal_edges[i][j]:
+                if self.horizontal_edges[i][j] == 0:
                     moves.append(('h', i, j))
         
         # Check vertical edges
         for i in range(self.grid_size):
             for j in range(self.dots):
-                if not self.vertical_edges[i][j]:
+                if self.vertical_edges[i][j] == 0:
                     moves.append(('v', i, j))
         
         return moves
@@ -91,11 +92,11 @@ class DotsAndBoxes:
         if edge_type == 'h':
             if row < 0 or row >= self.dots or col < 0 or col >= self.grid_size:
                 return False
-            return not self.horizontal_edges[row][col]
+            return self.horizontal_edges[row][col] == 0
         elif edge_type == 'v':
             if row < 0 or row >= self.grid_size or col < 0 or col >= self.dots:
                 return False
-            return not self.vertical_edges[row][col]
+            return self.vertical_edges[row][col] == 0
         
         return False
     
@@ -152,10 +153,10 @@ class DotsAndBoxes:
         if self.boxes[box_row][box_col] != 0:
             return False
         
-        top = self.horizontal_edges[box_row][box_col]
-        bottom = self.horizontal_edges[box_row + 1][box_col]
-        left = self.vertical_edges[box_row][box_col]
-        right = self.vertical_edges[box_row][box_col + 1]
+        top = self.horizontal_edges[box_row][box_col] != 0
+        bottom = self.horizontal_edges[box_row + 1][box_col] != 0
+        left = self.vertical_edges[box_row][box_col] != 0
+        right = self.vertical_edges[box_row][box_col + 1] != 0
         
         return top and bottom and left and right
     
@@ -173,9 +174,9 @@ class DotsAndBoxes:
         
         # Place the edge
         if edge_type == 'h':
-            self.horizontal_edges[row][col] = True
+            self.horizontal_edges[row][col] = self.current_player
         else:
-            self.vertical_edges[row][col] = True
+            self.vertical_edges[row][col] = self.current_player
         
         self.moves_count += 1
         
@@ -244,8 +245,12 @@ class DotsAndBoxes:
             1D numpy array representing the complete game state
         """
         # Flatten all components
-        h_edges = self.horizontal_edges.flatten().astype(float)
-        v_edges = self.vertical_edges.flatten().astype(float)
+        # Convert edges to boolean for state vector compatibility (0/1) or keep as is?
+        # The original implementation used boolean, so 0/1. 
+        # But now we have -1/0/1. 
+        # Let's keep the original behavior: 1 if edge exists, 0 otherwise for the network
+        h_edges = (self.horizontal_edges != 0).flatten().astype(float)
+        v_edges = (self.vertical_edges != 0).flatten().astype(float)
         boxes = self.boxes.flatten().astype(float)
         
         # Add current player as a feature
@@ -278,7 +283,7 @@ class DotsAndBoxes:
             for col in range(self.dots):
                 line += "●"
                 if col < self.grid_size:
-                    if self.horizontal_edges[row][col]:
+                    if self.horizontal_edges[row][col] != 0:
                         line += "───"
                     else:
                         line += "   "
@@ -288,7 +293,7 @@ class DotsAndBoxes:
             if row < self.grid_size:
                 line = ""
                 for col in range(self.dots):
-                    if self.vertical_edges[row][col]:
+                    if self.vertical_edges[row][col] != 0:
                         line += "│"
                     else:
                         line += " "

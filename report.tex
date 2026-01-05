@@ -76,6 +76,18 @@ Il ciclo di apprendimento:
     \item \textbf{Learn}: Addestra l'MLP usando supervised learning (stati $\rightarrow$ z)
 \end{enumerate}
 
+\subsection{Sviluppo del Progetto}
+Il progetto è stato realizzato seguendo un approccio incrementale in cinque fasi principali:
+
+\begin{enumerate}
+    \item \textbf{Core Engine}: Implementazione della logica di gioco (\texttt{dots\_and\_boxes.py}) e dell'algoritmo MinMax di base (\texttt{minmax.py}).
+    \item \textbf{Neural Evaluation}: Sviluppo dell'MLP (\texttt{mlp\_evaluator.py}) e integrazione con il motore di ricerca per sostituire l'euristica statica.
+    \item \textbf{Training Pipeline}: Creazione del ciclo di Self-Play (\texttt{train\_loop.py}) per generare dati e addestrare l'agente in modo autonomo.
+    \item \textbf{Adaptive Strategies}: Implementazione delle logiche dinamiche per L(t) e K(t) (\texttt{adaptive\_strategy.py}) per ottimizzare il bilanciamento tra esplorazione e sfruttamento.
+    \item \textbf{GUI \& Visualization}: Sviluppo di un'interfaccia grafica avanzata (\texttt{gui.py}) per il debugging visivo, il test manuale e la dimostrazione delle capacità dell'agente.
+    \item \textbf{Advanced Experimentation}: Setup sperimentale (\texttt{experiment.ipynb}) per validare l'apprendimento (Generational Battle) e analizzare l'efficienza (Cost/Benefit Analysis).
+\end{enumerate}
+
 \section{Implementazione}
 
 \subsection{Dots and Boxes}
@@ -209,7 +221,8 @@ $$L(t) = L_{const}, \quad K(t) = K_{const}$$
     \item \textbf{Training Loss}: MSE loss dell'MLP
     \item \textbf{Distribuzione Outcome}: Win/Tie/Loss nel tempo
     \item \textbf{Prediction Variance}: Confidenza dell'MLP
-    \item \textbf{Convergenza}: Stabilità della loss
+    \item \textbf{Generational Win Rate}: Percentuale di vittorie contro versioni precedenti (Self-Bootstrapping verification)
+    \item \textbf{Efficiency}: Win Rate vs Nodi Valutati (Cost/Benefit)
 \end{enumerate}
 
 \subsection{Risultati}
@@ -226,6 +239,22 @@ $$L(t) = L_{const}, \quad K(t) = K_{const}$$
     \item La loss diminuisce rapidamente nelle prime 20 iterazioni
     \item Stabilizzazione dopo 30-40 iterazioni
 \end{itemize}
+
+\subsubsection{Experiment 1: Generational Battle}
+Per dimostrare l'effettivo apprendimento ("Self-Bootstrapping"), abbiamo fatto scontrare l'agente all'iterazione $T$ contro la sua versione all'iterazione $T-k$.
+Un Win Rate $>50\%$ per l'agente $T$ conferma che il sistema sta imparando e migliorando nel tempo, non solo cambiando comportamento a caso.
+
+\subsubsection{Experiment 2: Cost/Benefit Analysis}
+Abbiamo analizzato il trade-off tra performance (Win Rate vs Random) e costo computazionale (Nodi medi valutati per mossa).
+L'obiettivo è identificare la strategia che ottiene il massimo risultato con il minimo sforzo computazionale (Frontiera di Pareto).
+
+\subsubsection{Experiment 1: Generational Battle}
+Per dimostrare l'effettivo apprendimento ("Self-Bootstrapping"), abbiamo fatto scontrare l'agente all'iterazione $T$ contro la sua versione all'iterazione $T-k$.
+Un Win Rate $>50\%$ per l'agente $T$ conferma che il sistema sta imparando e migliorando nel tempo, non solo cambiando comportamento a caso.
+
+\subsubsection{Experiment 2: Cost/Benefit Analysis}
+Abbiamo analizzato il trade-off tra performance (Win Rate vs Random) e costo computazionale (Nodi medi valutati per mossa).
+L'obiettivo è identificare la strategia che ottiene il massimo risultato con il minimo sforzo computazionale (Frontiera di Pareto).
 
 \subsubsection{Confronto Strategie}
 

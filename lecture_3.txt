@@ -1,0 +1,163 @@
+Min Max Search
+Min-Max Search is used in AI to implement systems that can
+play zero-sum perfect-information games (but not only…)
+
+Typically two players board games: Chess, Checkers, …
+It is an adaptation of hill climbing heuristic search alternating
+the choice of what state to choose next, according to the min
+or the max of the heuristic evaluation of the board position,
+depending which player turn is.
+The idea is that while player A is trying to maximize the
+evaluation of the position, the opponent is believed to be
+minimizing the same evaluation.
+
+Heuristic Evaluation
+H0 is an evaluation function of the configuration situation in
+the game. The evaluation is defined from the point of view
+of one player (say Max). Intuitevily it defines how good is a
+given configuration for the player.
+Given H0we compute the evaluation H L of a given
+configuration with a lookahed L
+
+H0 Examples
+Chess …..
+Othello/Reversi ….
+
+H0 TicTacToe
+0
+
+-1 O
+
+O
+
+-1
+
+O
+
+O
+
+O
+
+-1
+
+OX
+X
+
+XX
+O
+
+O
+X
+
+X
+
+0
+
+1 all path to winng
+0 otherwise
+-1 all path to loosing
+
+O
+
+X
+O
+
+MinMax Evaluation Prediction
+float H0 (state s);
+
+float HL (state s, int l){
+if (l==0) return H0(s);
+if (l even) return max({HL (x, l-1) : x in neighbors(s)});
+if (l odd) return min({HL (x, l-1) : x in neighbors(s)});
+}
+
+state MinMax (state s, int L){
+return argmaxHL(neighbors(s),L-1);
+}
+
+Average MinMax Search
+float H0 (state s);
+
+float HL (state s, int l){
+if (l==0) return H0(s);
+if (l even) return max({HL (x, l-1) : x in neighbors(s)});
+if (l odd) return average({HL (x, l-1) : x in neighbors(s)});
+}
+
+state MinMax (state s, int L){
+return argmaxHL(neighbors(s));
+}
+
+MinMax Search tree
+HL(B)=BL
+Min
+
+4
+
+8
+
+5
+
+...
+
+8
+
+>9
+
+9
+
+5
+
+...
+
+4
+
+4
+
+5
+
+...
+
+Max
+
+3
+
+Problems
+Exponential Branching
+Horizon Effect
+
+MinMax Search
+float HL (state s, int l){
+if (l==0) return H0(s);
+possiblemoves=neighbors(s);
+possiblemoves =- (bestmove=first(possiblemoves));
+bestvalue=HL(bestmove, l-1)
+while (possiblemoves != Æ) {
+possiblemoves =- (nextmove=first(possiblemoves));
+if (HL(nextmove, l-1) > bestvalue) && (l even)
+{bestvalue=HL(nextmove, l-1);
+bestmove=nextmove};
+if (HL(nextmove, l-1) < bestvalue) && (l odd)
+{bestvalue=HL(nextmove, l-1);
+bestmove=nextmove};
+}
+return(bestvalue)
+
+AlphaBeta Pruning
+float HL (state s, int l,float alfa){
+if (l==0) return H0 (s);
+possiblemoves=neighbors(s);
+possiblemoves =- (bestmove=first(possiblemoves));
+bestvalue=HL (bestmove, l-1)
+while (possiblemoves != Æ) {
+possiblemoves =- (nextmove=first(possiblemoves));
+if ((HL (nextmove, l-1,bestvalue) > bestvalue) && (l even) )
+{bestvalue=HL L(nextmove, l-1,bestvalue); bestmove=nextmove};
+if ((HL (nextmove, l-1,bestvalue ) < bestvalue) && (l odd))
+{bestvalue=HL (nextmove, l-1,bestvalue); bestmove=nextmove};
+if ((bestvalue < alfa) && (l odd)) break;
+if ((bestvalue > alfa) && (l even)) break;
+}
+return(bestvalue)
+
+
