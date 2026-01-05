@@ -2,7 +2,7 @@
 ## Dots and Boxes con Apprendimento Adattivo
 
 **Corso**: Artificial Intelligence 25/26
-**Studente**: Agostino Caianiello
+**Studente**: Agostino D'Agostino
 
 ---
 
