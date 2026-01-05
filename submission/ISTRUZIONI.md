@@ -1,6 +1,6 @@
 # ISTRUZIONI PER L'ESECUZIONE
 
-## 📦 Setup Iniziale
+##  Setup Iniziale
 
 ### 1. Installare le Dipendenze
 
