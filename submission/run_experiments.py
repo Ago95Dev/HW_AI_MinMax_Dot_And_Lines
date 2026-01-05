@@ -24,10 +24,7 @@ torch.manual_seed(42)
 
 # Plotting style
 sns.set_style('whitegrid')
-sns.set_context("paper", font_scale=1.4) # Professional paper style
 plt.rcParams['figure.figsize'] = (12, 6)
-plt.rcParams['savefig.dpi'] = 300 # High resolution
-plt.rcParams['savefig.format'] = 'pdf' # Vector format default
 
 print("✓ Environment Ready")
 
@@ -63,10 +60,8 @@ ax2.set_ylabel('Width $K$')
 ax2.legend()
 
 plt.tight_layout()
-plt.tight_layout()
-plt.savefig('strategies_plot.png', dpi=300)
-plt.savefig('strategies_plot.pdf') # Vector version
-print("Saved strategies_plot.png and .pdf")
+plt.savefig('strategies_plot.png')
+print("Saved strategies_plot.png")
 
 # --- 3. Training & Self-Play ---
 GRID_SIZE = 3
@@ -112,10 +107,8 @@ plt.title('Training Loss per Strategy')
 plt.xlabel('Iteration')
 plt.ylabel('MSE Loss')
 plt.legend()
-plt.legend()
-plt.savefig('training_loss_comparison.png', dpi=300)
-plt.savefig('training_loss_comparison.pdf')
-print("Saved training_loss_comparison.png and .pdf")
+plt.savefig('training_loss_comparison.png')
+print("Saved training_loss_comparison.png")
 
 # --- 4. Experiment 1: Generational Battle ---
 def play_match(agent1, agent2, games=20):
@@ -205,23 +198,11 @@ df_cost = pd.DataFrame(cost_benefit_data)
 print(df_cost)
 
 plt.figure(figsize=(10, 6))
-ax = sns.scatterplot(data=df_cost, x='Avg Nodes', y='Win Rate', hue='Strategy', s=200, style='Strategy')
-
-# Annotate points
-for i in range(df_cost.shape[0]):
-    plt.text(
-        df_cost.iloc[i]['Avg Nodes']+0.5, 
-        df_cost.iloc[i]['Win Rate']+0.5, 
-        df_cost.iloc[i]['Strategy'],
-        fontsize=11,
-        weight='bold'
-    )
-
+sns.scatterplot(data=df_cost, x='Avg Nodes', y='Win Rate', hue='Strategy', s=200)
 plt.title('Efficiency Frontier: Win Rate vs Computational Cost')
-plt.grid(True, which='both', linestyle='--', alpha=0.7)
-plt.savefig('cost_benefit_analysis.png', dpi=300)
-plt.savefig('cost_benefit_analysis.pdf')
-print("Saved cost_benefit_analysis.png and .pdf")
+plt.grid(True)
+plt.savefig('cost_benefit_analysis.png')
+print("Saved cost_benefit_analysis.png")
 
 # --- 6. Hyperparameter Tuning ---
 growth_rates = [0.01, 0.05, 0.10]
