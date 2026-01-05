@@ -137,9 +137,8 @@ Come da homework PDF:
 
 ## 👤 Autore
 
-Agostino Caianiello
+Agostino D'Agostino 
 Artificial Intelligence 25/26
 
 ---
 
-**Note**: Il progetto implementa completamente i requisiti dell'homework, con particolare attenzione alla sperimentazione di diverse strategie adattive e alla documentazione completa del processo di apprendimento.
